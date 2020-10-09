@@ -137,7 +137,7 @@ public class Address {
                 }
                 if(k==0)
                 {
-                    System.out.println("******No Contact found******");
+                    System.out.println("No Contact found");
 
                 }
             }
