@@ -128,7 +128,7 @@ public class Address {
             System.out.println("7.Search BY STATE");
             x=sc.nextInt();
             String name = new String();
-            if(x !=5 && x!= 6)
+            if(x !=5 && x!= 6 && x!= 7)
             {
                 System.out.println("In which address book");
                 name = sc.next();
@@ -180,7 +180,7 @@ public class Address {
                     {
                         System.out.println(b.get(k).first + " "+b.get(k).last);
                     }
-
+                    System.out.println("Number of people belonging to city " +city+ "is "+ b.size());
                 }
             }
             if(x==7)
@@ -198,7 +198,7 @@ public class Address {
                     {
                         System.out.println(b.get(k).first + " "+b.get(k).last);
                     }
-
+                    System.out.println("Number of people belonging to state " +state+ "is "+ b.size());
                 }
             }
         }
