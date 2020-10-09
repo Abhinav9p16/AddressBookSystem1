@@ -56,6 +56,8 @@ class AddressBook {
     ArrayList <Contact>  c=new ArrayList<Contact>();
     public boolean checkDup(Contact x){ return (c.stream().anyMatch(d -> d.equals(x))); }
     public List<Contact> searchCity(String city){return (c.stream().filter(d->d.city.equalsIgnoreCase(city)).collect(Collectors.toList()));}
+    public List<Contact> searchState(String state){return (c.stream().filter(d->d.state.equalsIgnoreCase(state)).collect(Collectors.toList()));}
+
     public boolean nameCheck(String f, String l, int i)
     {
         int k=0;
@@ -123,6 +125,7 @@ public class Address {
             System.out.println("4.DELETE A CONTACT");
             System.out.println("5.EXIT");
             System.out.println("6.Search BY CITY");
+            System.out.println("7.Search BY STATE");
             x=sc.nextInt();
             String name = new String();
             if(x !=5 && x!= 6)
@@ -177,10 +180,32 @@ public class Address {
                     {
                         System.out.println(b.get(k).first + " "+b.get(k).last);
                     }
-                    System.out.println("Number of people belonging to city " +city+ "is "+ b.size());
+
                 }
             }
+            if(x==7)
+            { System.out.println("Enter the state ");
+                String state=sc.next();
 
+                List<Contact> b = new ArrayList<>();
+                for( Map.Entry<String,AddressBook> i :a.entrySet()) {
+                    b.addAll(i.getValue().searchCity(state));
+                }
+                if(b.size() == 0)
+                { System.out.println("No contacts");}
+                else{
+                    for(int k=0;k<b.size();k++)
+                    {
+                        System.out.println(b.get(k).first + " "+b.get(k).last);
+                    }
+
+                }
+            }
         }
+        sc.close();
     }
 }
+
+
+
+
