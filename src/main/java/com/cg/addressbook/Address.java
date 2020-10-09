@@ -118,6 +118,29 @@ public class Address {
                     c.get(i).viewContact();
                 }
             }
+            if(x==4)
+            {
+                System.out.println("Enter First Name");
+                String f=sc.next();
+                System.out.println("Enter Last Name");
+                String l=sc.next();
+                int k=0;
+                for(int i=0;i<c.size();i++)
+                {
+                    if(c.get(i).first.equalsIgnoreCase(f) && c.get(i).last.equalsIgnoreCase(l))
+                    {
+                        k=1;
+                        c.remove(i);
+                        System.out.println("Contact Deleted");
+                        break;
+                    }
+                }
+                if(k==0)
+                {
+                    System.out.println("******No Contact found******");
+
+                }
+            }
         }
     }
 }
