@@ -5,9 +5,11 @@ import java.util.stream.Collectors;
 class Contact {
     Scanner sc=new Scanner(System.in);
     String first,last,address,String,city,state,zip,phno,email;
+    public boolean equals(Contact check){
+        return (check.first.equalsIgnoreCase(this.first)&&check.last.equalsIgnoreCase(this.last));
+       }
     public void addContact()
     {
-
         System.out.println("Enter First Name");
         this.first=sc.next();
         System.out.println("Enter Last Name");
@@ -52,6 +54,7 @@ class Contact {
 }
 class AddressBook {
     ArrayList <Contact>  c=new ArrayList<Contact>();
+    public boolean checkDup(Contact x){ return (c.stream().anyMatch(d -> d.equals(x))); }
     public boolean nameCheck(String f, String l, int i)
     {
         int k=0;
@@ -66,6 +69,7 @@ class AddressBook {
         if(k==0)
         {
             System.out.println("******No Contact found******");
+            return false;
         }
         return true;
     }
@@ -73,7 +77,8 @@ class AddressBook {
     {
         Contact a=new Contact();
         a.addContact();
-        c.add(a);
+        if(checkDup(a))  System.out.println("Duplicate Contact");
+        else  c.add(a);
     }
     public void editContact(String f, String l, int i)
     {
