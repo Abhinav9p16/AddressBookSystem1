@@ -4,16 +4,18 @@ import java.util.stream.Collectors;
 
 class Contact {
     Scanner sc=new Scanner(System.in);
-    String first,last,address,String,city,state,zip,phno,email;
-    public boolean equals(Contact check){
-        return (check.first.equalsIgnoreCase(this.first)&&check.last.equalsIgnoreCase(this.last));
-       }
+    String first,last,address,String,city,state,zip,phno,email,fullName;
+    Contact(){}
+    Contact(String fullName){this.fullName=fullName;}
+    public String toString(){return this.fullName;}
+    public boolean equals(Contact check){ return (check.first.equalsIgnoreCase(this.first)&&check.last.equalsIgnoreCase(this.last)); }
     public void addContact()
     {
         System.out.println("Enter First Name");
         this.first=sc.next();
         System.out.println("Enter Last Name");
         this.last=sc.next();
+        this.fullName= this.first+ " " +this.last;
         System.out.println("Enter Address");
         this.address=sc.next();
         System.out.println("Enter city");
@@ -57,7 +59,7 @@ class AddressBook {
     public boolean checkDup(Contact x){ return (c.stream().anyMatch(d -> d.equals(x))); }
     public List<Contact> searchCity(String city){return (c.stream().filter(d->d.city.equalsIgnoreCase(city)).collect(Collectors.toList()));}
     public List<Contact> searchState(String state){return (c.stream().filter(d->d.state.equalsIgnoreCase(state)).collect(Collectors.toList()));}
-
+    public List<Contact> sort(){return c.stream().sorted((p1, p2)->p1.fullName.compareTo(p2.fullName)).collect(Collectors.toList()); }
     public boolean nameCheck(String f, String l, int i)
     {  return (c.get(i).first.equalsIgnoreCase(f) && c.get(i).last.equalsIgnoreCase(l)) ; }
     public void addContact()
@@ -103,6 +105,7 @@ public class Address {
             System.out.println("5.EXIT");
             System.out.println("6.Search BY CITY");
             System.out.println("7.Search BY STATE");
+            System.out.println("8.Sort by name");
             x=sc.nextInt();
             String name = new String();
             if(x !=5 && x!= 6 && x!= 7)
@@ -172,6 +175,13 @@ public class Address {
                         System.out.println(b.get(k).first + " "+b.get(k).last);
                     }
                     System.out.println("Number of people belonging to state " +state+ "is "+ b.size());
+                }
+            }
+            if(x==8){
+                List<Contact> b = new ArrayList<>();
+                for( Map.Entry<String,AddressBook> i :a.entrySet()) { b.addAll(i.getValue().sort());}
+                for(int k=0;k<b.size();k++){
+                    System.out.println(b.get(k).fullName);
                 }
             }
         }
