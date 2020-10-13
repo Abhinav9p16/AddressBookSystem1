@@ -60,6 +60,9 @@ class AddressBook {
     public List<Contact> searchCity(String city){return (c.stream().filter(d->d.city.equalsIgnoreCase(city)).collect(Collectors.toList()));}
     public List<Contact> searchState(String state){return (c.stream().filter(d->d.state.equalsIgnoreCase(state)).collect(Collectors.toList()));}
     public List<Contact> sort(){return c.stream().sorted((p1, p2)->p1.fullName.compareTo(p2.fullName)).collect(Collectors.toList()); }
+    public List<Contact> sortCity(){return c.stream().sorted((p1, p2)->p1.city.compareTo(p2.city)).collect(Collectors.toList()); }
+    public List<Contact> sortState(){return c.stream().sorted((p1, p2)->p1.state.compareTo(p2.state)).collect(Collectors.toList()); }
+
     public boolean nameCheck(String f, String l, int i)
     {  return (c.get(i).first.equalsIgnoreCase(f) && c.get(i).last.equalsIgnoreCase(l)) ; }
     public void addContact()
@@ -105,10 +108,12 @@ public class Address {
             System.out.println("5.EXIT");
             System.out.println("6.Search BY CITY");
             System.out.println("7.Search BY STATE");
-            System.out.println("8.Sort by name");
+            System.out.println("8.SORT BY NAME");
+            System.out.println("9.SORT BY CITY");
+            System.out.println("10.SORT BY STATE");
             x=sc.nextInt();
             String name = new String();
-            if(x !=5 && x!= 6 && x!= 7)
+            if(x !=5 && x!= 6 && x!= 7 && x!= 8 && x!= 9 && x!= 10)
             {
                 System.out.println("In which address book");
                 name = sc.next();
@@ -154,7 +159,7 @@ public class Address {
                 else{
                     for(int k=0;k<b.size();k++)
                     {
-                        System.out.println(b.get(k).first + " "+b.get(k).last);
+                        System.out.println(b.get(k).first + " "+b.get(k).last );
                     }
                     System.out.println("Number of people belonging to city " +city+ "is "+ b.size());
                 }
@@ -180,9 +185,17 @@ public class Address {
             if(x==8){
                 List<Contact> b = new ArrayList<>();
                 for( Map.Entry<String,AddressBook> i :a.entrySet()) { b.addAll(i.getValue().sort());}
-                for(int k=0;k<b.size();k++){
-                    System.out.println(b.get(k).fullName);
-                }
+                for(int k=0;k<b.size();k++){ System.out.println(b.get(k).fullName); }
+            }
+            if(x==9){
+                List<Contact> b = new ArrayList<>();
+                for( Map.Entry<String,AddressBook> i :a.entrySet()) {b.addAll(i.getValue().sortCity());}
+                for(int k=0;k<b.size();k++){ System.out.println(b.get(k).fullName + " of " +b.get(k).city); }
+            }
+            if(x==10){
+                List<Contact> b = new ArrayList<>();
+                for( Map.Entry<String,AddressBook> i :a.entrySet()) {b.addAll(i.getValue().sortState());}
+                for(int k=0;k<b.size();k++){ System.out.println(b.get(k).fullName + " of " +b.get(k).state); }
             }
         }
         sc.close();
