@@ -1,5 +1,9 @@
 package com.cg.addressbook;
 
+import com.google.gson.Gson;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -182,7 +186,7 @@ public class Address {
         }
     }
 
-  /*  public static ArrayList<Contact> readAllCSV() {
+   public static ArrayList<Contact> readAllCSV() {
         ArrayList<Contact> c = new ArrayList<Contact>();
         try {
             FileReader fin = new FileReader("/Users/abhinavthakur/Desktop/adbook.csv");
@@ -198,8 +202,8 @@ public class Address {
                     break;
                 }
             }
-            r.close();
-        } catch (IOException | ClassNotFoundException e) {
+            fin.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return c;
@@ -210,20 +214,20 @@ public class Address {
             FileWriter fout = new FileWriter("/Users/abhinavthakur/Desktop/adbook.csv");
             //FileWriter fout = new FileWriter("C:/Users/aachm/Desktop/adbook.csv");
             CSVWriter csv = new CSVWriter(fout,CSVWriter.DEFAULT_SEPARATOR,CSVWriter.NO_QUOTE_CHARACTER,CSVWriter.DEFAULT_ESCAPE_CHARACTER,CSVWriter.DEFAULT_LINE_END);
-            for (Contact k : c) csv.writeNext(c.getContactDetails());
+            for (Contact k : c) csv.writeNext(k.getContactDetails());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static List<Contact> readAllJSON() {
+   /* public static List<Contact> readAllJSON() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("/Users/abhinavthakur/Desktop/adbook.json"));
            // BufferedReader br = new BufferedReader(new FileReader("C:/Users/aachm/Desktop/adbook.json"));
             Gson gson = new Gson();
             Contact[] list = gson.fromJson(br, Contact[].class);
             return Arrays.asList(list);
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return new ArrayList<Contact>();
@@ -372,7 +376,7 @@ public class Address {
             if(x == 12){
                 for (Contact k : readAll()) k.viewContact();
             }
-           /* if (x == 13) {
+            if (x == 13) {
                 ArrayList<Contact> temp = new ArrayList<Contact>();
                 for (Map.Entry<String, AddressBook> k : a.entrySet() ) temp.addAll(k.getValue().getContacts());
                 writeAllCSV(temp);
@@ -380,7 +384,7 @@ public class Address {
             if(x == 14){
                 for (Contact k : readAllCSV()) k.viewContact();
             }
-            if (x == 15) {
+           /* if (x == 15) {
                 ArrayList<Contact> temp = new ArrayList<Contact>();
                 for (Map.Entry<String, AddressBook> k : a.entrySet() ) temp.addAll(k.getValue().getContacts());
                 writeAllJSON(temp);
