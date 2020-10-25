@@ -220,7 +220,7 @@ public class Address {
         }
     }
 
-   /* public static List<Contact> readAllJSON() {
+    public static List<Contact> readAllJSON() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("/Users/abhinavthakur/Desktop/adbook.json"));
            // BufferedReader br = new BufferedReader(new FileReader("C:/Users/aachm/Desktop/adbook.json"));
@@ -246,7 +246,7 @@ public class Address {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
     public static void main(String args[]) {
         HashMap<String, AddressBook> a = new HashMap<String, AddressBook>();
@@ -384,14 +384,14 @@ public class Address {
             if(x == 14){
                 for (Contact k : readAllCSV()) k.viewContact();
             }
-           /* if (x == 15) {
+            if (x == 15) {
                 ArrayList<Contact> temp = new ArrayList<Contact>();
                 for (Map.Entry<String, AddressBook> k : a.entrySet() ) temp.addAll(k.getValue().getContacts());
                 writeAllJSON(temp);
             }
             if(x == 16){
                 for (Contact k : readAllJSON()) k.viewContact();
-            }*/
+            }
         }
         sc.close();
     }
