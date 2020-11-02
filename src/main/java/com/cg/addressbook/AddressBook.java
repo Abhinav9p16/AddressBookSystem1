@@ -139,5 +139,24 @@ class AddressBook {
         }
         return count;
     }
+
+    public int RetriveField(String field, String data) {
+        int count = 0;
+        String sql = "select * from address where "+field+"=?";
+        try {
+            Connection connection = con.getConnection();
+            Statement = connection.prepareStatement(sql);
+            ;
+            Statement.setString(1, data);
+            ResultSet r = Statement.executeQuery();
+            while (r.next()) {
+                count++;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return count;
+
+    }
 }
 
