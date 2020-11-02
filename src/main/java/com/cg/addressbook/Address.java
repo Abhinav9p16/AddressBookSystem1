@@ -1,164 +1,23 @@
 package com.cg.addressbook;
-
+import java.sql.*;
 import com.google.gson.Gson;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-class Contact implements Serializable {
-    String first, last, address, city, state, zip, phno, email, fullName;
-
-    public void setContact(String first, String last, String address, String city, String state, String zip, String phno, String email) {
-        this.first = first;
-        this.last = last;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
-        this.phno = phno;
-        this.email = email;
-    }
-
-    public String[] getContactDetails() {
-        return new String[]{first, last, address, city, state, zip, phno, email};
-    }
-
-    public String toString() {
-        return this.fullName;
-    }
-
-    public boolean equals(Contact check) {
-        return (check.first.equalsIgnoreCase(this.first) && check.last.equalsIgnoreCase(this.last));
-    }
-
-    public void addContact() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter First Name");
-        this.first = sc.next();
-        System.out.println("Enter Last Name");
-        this.last = sc.next();
-        System.out.println("Enter Address");
-        this.address = sc.next();
-        System.out.println("Enter city");
-        this.city = sc.next();
-        System.out.println("Enter state");
-        this.state = sc.next();
-        System.out.println("Enter zip code");
-        this.zip = sc.next();
-        System.out.println("Enter phone number");
-        this.phno = sc.next();
-        System.out.println("Enter email");
-        this.email = sc.next();
-        this.fullName = this.first + " " + this.last;
-    }
-
-    public void editContact() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter Address");
-        this.address = sc.next();
-        System.out.println("Enter city");
-        this.city = sc.next();
-        System.out.println("Enter state");
-        this.state = sc.next();
-        System.out.println("Enter zip code");
-        this.zip = sc.next();
-        System.out.println("Enter phone number");
-        this.phno = sc.next();
-        System.out.println("Enter email");
-        this.email = sc.next();
-    }
-
-    public void viewContact() {
-        System.out.println("ADDRESS = " + this.address);
-        System.out.println("CITY = " + this.city);
-        System.out.println("STATE = " + this.state);
-        System.out.println("ZIP = " + this.zip);
-        System.out.println("PHONE NUMBER =" + this.phno);
-        System.out.println("EMAIL =" + this.email);
-    }
-}
-
-class AddressBook {
-    ArrayList<Contact> c = new ArrayList<Contact>();
-
-    public ArrayList<Contact> getContacts() {
-        return c;
-    }
-
-    public boolean checkDup(Contact x) {
-        return (c.stream().anyMatch(d -> d.equals(x)));
-    }
-
-    public List<Contact> searchCity(String city) {
-        return (c.stream().filter(d -> d.city.equalsIgnoreCase(city)).collect(Collectors.toList()));
-    }
-
-    public List<Contact> searchState(String state) {
-        return (c.stream().filter(d -> d.state.equalsIgnoreCase(state)).collect(Collectors.toList()));
-    }
-
-    public List<Contact> sort() {
-        return c.stream().sorted((p1, p2) -> p1.fullName.compareTo(p2.fullName)).collect(Collectors.toList());
-    }
-
-    public List<Contact> sortCity() {
-        return c.stream().sorted((p1, p2) -> p1.city.compareTo(p2.city)).collect(Collectors.toList());
-    }
-
-    public List<Contact> sortState() {
-        return c.stream().sorted((p1, p2) -> p1.state.compareTo(p2.state)).collect(Collectors.toList());
-    }
-
-    public boolean nameCheck(String f, String l, int i) {
-        return (c.get(i).first.equalsIgnoreCase(f) && c.get(i).last.equalsIgnoreCase(l));
-    }
-
-    public void addContact() {
-        Contact a = new Contact();
-        a.addContact();
-        if (checkDup(a)) System.out.println("Duplicate Contact");
-        else c.add(a);
-    }
-
-    public void editContact(String f, String l) {
-        for (int i = 0; i < c.size(); i++) {
-            if (nameCheck(f, l, i)) {
-                c.get(i).editContact();
-                break;
-            }
-        }
-    }
-
-    public void viewContact(String f, String l) {
-        for (int i = 0; i < c.size(); i++) {
-            if (nameCheck(f, l, i)) {
-                c.get(i).viewContact();
-                break;
-            }
-        }
-    }
-
-    public void deleteContact(String f, String l) {
-        for (int i = 0; i < c.size(); i++) {
-            if (nameCheck(f, l, i)) {
-                c.remove(i);
-                break;
-            }
-        }
-    }
-}
-
 public class Address {
+
     public static ArrayList<Contact> readAll() {
         ArrayList<Contact> c = new ArrayList<Contact>();
         try {
             FileInputStream fin = new FileInputStream("/Users/abhinavthakur/Desktop/adbook.txt");
             //FileInputStream fin = new FileInputStream("C:/Users/aachm/Desktop/adbook.txt");
             ObjectInputStream obj = new ObjectInputStream(fin);
-            while(true) {
+            while (true) {
                 try {
                     c.add((Contact) obj.readObject());
                 } catch (IOException e) {
@@ -173,12 +32,12 @@ public class Address {
         return c;
     }
 
-    public static void writeAll(ArrayList<Contact> c){
+    public static void writeAll(ArrayList<Contact> c) {
         try {
             FileOutputStream fout = new FileOutputStream("/Users/abhinavthakur/Desktop/adbook.txt");
             //FileOutputStream fout = new FileOutputStream("C:/Users/aachm/Desktop/adbook.txt");
             ObjectOutputStream obj = new ObjectOutputStream(fout);
-            for(Contact k: c) obj.writeObject(k);
+            for (Contact k : c) obj.writeObject(k);
             obj.close();
             fout.close();
         } catch (IOException e) {
@@ -186,19 +45,19 @@ public class Address {
         }
     }
 
-   public static ArrayList<Contact> readAllCSV() {
+    public static ArrayList<Contact> readAllCSV() {
         ArrayList<Contact> c = new ArrayList<Contact>();
         try {
             FileReader fin = new FileReader("/Users/abhinavthakur/Desktop/adbook.csv");
             //FileReader fin = new FileReader("C:/Users/aachm/Desktop/adbook.csv");
-            CSVReader csv = new CSVReader(fin);
+            CSVReader csv = new CSVReaderBuilder(fin).withSkipLines(1).build();
             while (true) {
                 try {
                     String[] s = csv.readNext();
                     Contact temp = new Contact();
                     temp.setContact(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]);
                     c.add(temp);
-                } catch(Exception e) {
+                } catch (Exception e) {
                     break;
                 }
             }
@@ -213,8 +72,10 @@ public class Address {
         try {
             FileWriter fout = new FileWriter("/Users/abhinavthakur/Desktop/adbook.csv");
             //FileWriter fout = new FileWriter("C:/Users/aachm/Desktop/adbook.csv");
-            CSVWriter csv = new CSVWriter(fout,CSVWriter.DEFAULT_SEPARATOR,CSVWriter.NO_QUOTE_CHARACTER,CSVWriter.DEFAULT_ESCAPE_CHARACTER,CSVWriter.DEFAULT_LINE_END);
+            CSVWriter csv = new CSVWriter(fout, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+            csv.writeNext(new String[]{"FName", "LName", "Address", "City", "State", "Zip", "Phno", "Email"});
             for (Contact k : c) csv.writeNext(k.getContactDetails());
+            fout.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -223,7 +84,7 @@ public class Address {
     public static List<Contact> readAllJSON() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("/Users/abhinavthakur/Desktop/adbook.json"));
-           // BufferedReader br = new BufferedReader(new FileReader("C:/Users/aachm/Desktop/adbook.json"));
+            // BufferedReader br = new BufferedReader(new FileReader("C:/Users/aachm/Desktop/adbook.json"));
             Gson gson = new Gson();
             Contact[] list = gson.fromJson(br, Contact[].class);
             return Arrays.asList(list);
@@ -238,10 +99,8 @@ public class Address {
         try {
             FileWriter fout = new FileWriter("/Users/abhinavthakur/Desktop/adbook.json");
             //FileWriter fout = new FileWriter("C:/Users/aachm/Desktop/adbook.json");
-            for (Contact k : c) {
-                String s = gson.toJson(k);
-                fout.write(s);
-            }
+            String s = gson.toJson(c); // pehle for loop nmei ek ek contact run karaa rahe the aur ab
+            fout.write(s);
             fout.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -281,7 +140,7 @@ public class Address {
             System.out.println("16.READ ALL (JSON)");
             x = sc.nextInt();
             String name = new String();
-            if (x<5) {
+            if (x < 5) {
                 System.out.println("In which address book");
                 name = sc.next();
             }
@@ -370,26 +229,26 @@ public class Address {
             }
             if (x == 11) {
                 ArrayList<Contact> temp = new ArrayList<Contact>();
-                for (Map.Entry<String, AddressBook> k : a.entrySet() ) temp.addAll(k.getValue().getContacts());
+                for (Map.Entry<String, AddressBook> k : a.entrySet()) temp.addAll(k.getValue().getContacts());
                 writeAll(temp);
             }
-            if(x == 12){
+            if (x == 12) {
                 for (Contact k : readAll()) k.viewContact();
             }
             if (x == 13) {
                 ArrayList<Contact> temp = new ArrayList<Contact>();
-                for (Map.Entry<String, AddressBook> k : a.entrySet() ) temp.addAll(k.getValue().getContacts());
+                for (Map.Entry<String, AddressBook> k : a.entrySet()) temp.addAll(k.getValue().getContacts());
                 writeAllCSV(temp);
             }
-            if(x == 14){
+            if (x == 14) {
                 for (Contact k : readAllCSV()) k.viewContact();
             }
             if (x == 15) {
                 ArrayList<Contact> temp = new ArrayList<Contact>();
-                for (Map.Entry<String, AddressBook> k : a.entrySet() ) temp.addAll(k.getValue().getContacts());
+                for (Map.Entry<String, AddressBook> k : a.entrySet()) temp.addAll(k.getValue().getContacts());
                 writeAllJSON(temp);
             }
-            if(x == 16){
+            if (x == 16) {
                 for (Contact k : readAllJSON()) k.viewContact();
             }
         }
