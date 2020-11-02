@@ -31,4 +31,22 @@ public class TestAddressBook {
         AddressBook a=new AddressBook();
         Assert.assertEquals(3,a.RetriveField("state","m"));
     }
+    @Test
+    public void test6CheckInsert()
+    {
+        AddressBook a=new AddressBook();
+        Contact c=new Contact();
+        c.id=1;
+        c.first="a";
+        c.last="b";
+        c.address="c";
+        c.city="d";
+        c.state="e";
+        c.phno="23456";
+        c.email="ab@cd";
+        c.zip="45678";
+        c.DOJ="2019-11-13";
+        a.Insert(c);
+        Assert.assertEquals(7,a.readData().size());
+    }
 }
