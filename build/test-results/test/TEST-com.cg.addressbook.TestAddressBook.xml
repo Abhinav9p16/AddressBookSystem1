@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.cg.addressbook.TestAddressBook" tests="1" skipped="0" failures="1" errors="0" timestamp="2020-11-02T17:54:06" hostname="ABHINAVs-MacBook-Air.local" time="0.099">
+<testsuite name="com.cg.addressbook.TestAddressBook" tests="1" skipped="0" failures="1" errors="0" timestamp="2020-11-02T17:58:50" hostname="ABHINAVs-MacBook-Air.local" time="0.201">
   <properties/>
-  <testcase name="test1ReadData" classname="com.cg.addressbook.TestAddressBook" time="0.099">
+  <testcase name="test1ReadData" classname="com.cg.addressbook.TestAddressBook" time="0.201">
     <failure message="java.lang.NullPointerException" type="java.lang.NullPointerException">java.lang.NullPointerException
 	at com.cg.addressbook.AddressBook.readData(AddressBook.java:21)
 	at com.cg.addressbook.TestAddressBook.test1ReadData(TestAddressBook.java:8)

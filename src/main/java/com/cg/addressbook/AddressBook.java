@@ -38,6 +38,20 @@ class AddressBook {
         }
         return arr;
     }
+    public void updateContact(String field,String data,int contact_id)
+    {
+        String sql="update contact c, addressbook a set "+field+"=? where c.contact_id=a.contact_id and c.contact_id=?;";
+        try
+        {
+            Connection connection=con.getConnection();
+            Statement=connection.prepareStatement(sql);;
+            Statement.setString(1,data);
+            Statement.setInt(2,contact_id);
+            Statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
     ArrayList<Contact> c = new ArrayList<Contact>();
 
     public ArrayList<Contact> getContacts() {
