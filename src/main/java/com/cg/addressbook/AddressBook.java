@@ -119,5 +119,25 @@ class AddressBook {
             }
         }
     }
+
+    public int findDoj(String start, String end) {
+        int count=0;
+        String sql="select * from address where DOJ between ? and ?;";
+        try
+        {
+            Connection connection=con.getConnection();
+            Statement=connection.prepareStatement(sql);;
+            Statement.setString(1,start);
+            Statement.setString(2,end);
+            ResultSet r=Statement.executeQuery();
+            while(r.next())
+            {
+                count++;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return count;
+    }
 }
 
