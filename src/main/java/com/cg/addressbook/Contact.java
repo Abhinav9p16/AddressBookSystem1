@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 class Contact implements Serializable {
-    String first, last, address, city, state, zip, phno, email, fullName,DOJ;
-    int adbook_id,contact_id,contact_type,type_id,id;
+    String first, last, address, city, state, zip, phno, email, fullName, DOJ;
+
     public void setContact(String first, String last, String address, String city, String state, String zip, String phno, String email) {
         this.first = first;
         this.last = last;

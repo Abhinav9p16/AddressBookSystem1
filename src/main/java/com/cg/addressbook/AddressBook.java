@@ -1,57 +1,15 @@
 package com.cg.addressbook;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 class AddressBook {
-    ConnectionRetriever con=new ConnectionRetriever();
+    ConnectionRetriever con = new ConnectionRetriever();
     PreparedStatement Statement;
 
-    public  List<Contact> readData(){
-        String sql="select * from contact c, addressbook a where c.contact_id=a.contact_id ;";
-        List<Contact> arr=new ArrayList<Contact>();
-        try
-        {
-            Connection connection=con.getConnection();
-            Statement=connection.prepareStatement(sql);
-            ResultSet result=Statement.executeQuery();
-            while(result.next())
-            {
-                Contact c=new Contact();
-                c.first=result.getString("first_name");
-                c.last=result.getString("last_name");
-                c.address=result.getString("address");
-                c.email=result.getString("email");
-                c.phno=result.getString("phone_no");
-                c.city=result.getString("city");
-                c.state=result.getString("state");
-                c.zip=result.getString("zip");
-                arr.add(c);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return arr;
-    }
-    public void updateContact(String field,String data,int contact_id)
-    {
-        String sql="update contact c, addressbook a set "+field+"=? where c.contact_id=a.contact_id and c.contact_id=?;";
-        try
-        {
-            Connection connection=con.getConnection();
-            Statement=connection.prepareStatement(sql);;
-            Statement.setString(1,data);
-            Statement.setInt(2,contact_id);
-            Statement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
+
     ArrayList<Contact> c = new ArrayList<Contact>();
 
     public ArrayList<Contact> getContacts() {
@@ -120,18 +78,16 @@ class AddressBook {
         }
     }
 
-    public int findDoj(String start, String end) {
-        int count=0;
-        String sql="select * from address where DOJ between ? and ?;";
-        try
-        {
-            Connection connection=con.getConnection();
-            Statement=connection.prepareStatement(sql);;
-            Statement.setString(1,start);
-            Statement.setString(2,end);
-            ResultSet r=Statement.executeQuery();
-            while(r.next())
-            {
+    public int findDoj(String beg, String end) {
+        int count = 0;
+        String sql = "select * from addressbook where date_added between ? and ?;";
+        try {
+            Connection connection = con.getConnection();
+            Statement = connection.prepareStatement(sql);
+            Statement.setString(1, beg);
+            Statement.setString(2, end);
+            ResultSet r = Statement.executeQuery();
+            while (r.next()) {
                 count++;
             }
         } catch (SQLException throwables) {
@@ -140,9 +96,48 @@ class AddressBook {
         return count;
     }
 
-    public int RetriveField(String field, String data) {
+    public List<Contact> readData() {
+        String sql = "select * from addressbook ;";
+        List<Contact> arr = new ArrayList<Contact>();
+        try {
+            Connection connection = con.getConnection();
+            Statement = connection.prepareStatement(sql);
+            ResultSet result = Statement.executeQuery();
+            while (result.next()) {
+                Contact c = new Contact();
+                c.first = result.getString("first_name");
+                c.last = result.getString("last_name");
+                c.address = result.getString("address");
+                c.email = result.getString("email");
+                c.phno = result.getString("phone_no");
+                c.city = result.getString("city");
+                c.state = result.getString("state");
+                c.zip = result.getString("zip");
+                arr.add(c);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return arr;
+    }
+
+    public void updateContact(String field, String data, String first, String last) {
+        String sql = "update addressbook set " + field + "=? where first_name = ? and last_name=? ;";
+        try {
+            Connection connection = con.getConnection();
+            Statement = connection.prepareStatement(sql);
+            Statement.setString(1, data);
+            Statement.setString(2, first);
+            Statement.setString(3, last);
+            Statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public int FetchField(String field, String data) {
         int count = 0;
-        String sql = "select * from address where "+field+"=?";
+        String sql = "select * from addressbook where " + field + "=?";
         try {
             Connection connection = con.getConnection();
             Statement = connection.prepareStatement(sql);
@@ -158,40 +153,53 @@ class AddressBook {
         return count;
 
     }
-    public void Insert(Contact c)
-    {
-        String sql="insert into contact (id,first_name,last_name,phone_no,email) values (?,?,?,?,?);";
+
+    public void Insert(Contact c) {
+        String sql = "insert into Addressbook values (?,?,?,?,?,?,?,?,?);";
         try {
-            int id=0;
             Connection connection = con.getConnection();
-            Statement = connection.prepareStatement(sql);
-            Statement.setInt(1, c.id);
-            Statement.setString(2,c.first);
-            Statement.setString(3,c.last);
-            Statement.setString(4,c.phno);
-            Statement.setString(5,c.email);
-            Statement.executeUpdate();
-            //getting the contact id which is assigned by auto increment
-            Statement = connection.prepareStatement("select contact_id from contact where phone_no=?");
-            Statement.setString(1,c.phno);
-            ResultSet r=Statement.executeQuery();
-            while(r.next())
-            {
-                id=r.getInt(1);
-                break;
-            }
-            //using contact id to assign address table
-            Statement = connection.prepareStatement("insert into address (contact_id,address,city,state,zip,DOJ) values (?,?,?,?,?,?);");
-            Statement.setInt(1,id);
-            Statement.setString(2,c.address);
-            Statement.setString(3,c.city);
-            Statement.setString(4,c.state);
-            Statement.setString(5,c.zip);
-            Statement.setString(6,c.DOJ);
+            Statement = connection.prepareStatement(sql); // isko java se convert karke sql readable format pe 39:00
+            Statement.setString(1, c.first);
+            Statement.setString(2, c.last);
+            Statement.setString(3, c.address);
+            Statement.setString(4, c.city);
+            Statement.setString(5, c.state);
+            Statement.setString(6, c.zip);
+            Statement.setString(7, c.phno);
+            Statement.setString(8, c.email);
+            Statement.setString(9, c.DOJ);
             Statement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public ArrayList<Thread> MultithreadedInsert(ArrayList<Contact> list) {
+        Connection connection = con.getConnection();
+        ArrayList<Thread> threads = new ArrayList<>();
+        for (Contact c : list) {
+            Runnable task = () -> {
+                try {
+                    String sql = "insert into addressbook values (?,?,?,?,?,?,?,?,?);";
+                    Statement = connection.prepareStatement(sql);
+                    Statement.setString(1, c.first);
+                    Statement.setString(2, c.last);
+                    Statement.setString(3, c.address);
+                    Statement.setString(4, c.city);
+                    Statement.setString(5, c.state);
+                    Statement.setString(6, c.zip);
+                    Statement.setString(7, c.phno);
+                    Statement.setString(8, c.email);
+                    Statement.setString(9, c.DOJ);
+                    Statement.executeUpdate();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            };
+            Thread t = new Thread(task);
+            threads.add(t);
+        }
+        return threads;
     }
 }
 

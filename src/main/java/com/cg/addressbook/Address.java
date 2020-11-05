@@ -1,5 +1,7 @@
 package com.cg.addressbook;
+
 import java.sql.*;
+
 import com.google.gson.Gson;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -7,15 +9,13 @@ import com.opencsv.CSVWriter;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Address {
-
+//File IO
     public static ArrayList<Contact> readAll() {
         ArrayList<Contact> c = new ArrayList<Contact>();
         try {
             FileInputStream fin = new FileInputStream("/Users/abhinavthakur/Desktop/adbook.txt");
-            //FileInputStream fin = new FileInputStream("C:/Users/aachm/Desktop/adbook.txt");
             ObjectInputStream obj = new ObjectInputStream(fin);
             while (true) {
                 try {
@@ -31,11 +31,10 @@ public class Address {
         }
         return c;
     }
-
+//File IO
     public static void writeAll(ArrayList<Contact> c) {
         try {
             FileOutputStream fout = new FileOutputStream("/Users/abhinavthakur/Desktop/adbook.txt");
-            //FileOutputStream fout = new FileOutputStream("C:/Users/aachm/Desktop/adbook.txt");
             ObjectOutputStream obj = new ObjectOutputStream(fout);
             for (Contact k : c) obj.writeObject(k);
             obj.close();
@@ -44,12 +43,11 @@ public class Address {
             e.printStackTrace();
         }
     }
-
+//CSV
     public static ArrayList<Contact> readAllCSV() {
         ArrayList<Contact> c = new ArrayList<Contact>();
         try {
             FileReader fin = new FileReader("/Users/abhinavthakur/Desktop/adbook.csv");
-            //FileReader fin = new FileReader("C:/Users/aachm/Desktop/adbook.csv");
             CSVReader csv = new CSVReaderBuilder(fin).withSkipLines(1).build();
             while (true) {
                 try {
@@ -71,7 +69,6 @@ public class Address {
     public static void writeAllCSV(ArrayList<Contact> c) {
         try {
             FileWriter fout = new FileWriter("/Users/abhinavthakur/Desktop/adbook.csv");
-            //FileWriter fout = new FileWriter("C:/Users/aachm/Desktop/adbook.csv");
             CSVWriter csv = new CSVWriter(fout, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
             csv.writeNext(new String[]{"FName", "LName", "Address", "City", "State", "Zip", "Phno", "Email"});
             for (Contact k : c) csv.writeNext(k.getContactDetails());
@@ -80,11 +77,10 @@ public class Address {
             e.printStackTrace();
         }
     }
-
+//JSON
     public static List<Contact> readAllJSON() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("/Users/abhinavthakur/Desktop/adbook.json"));
-            // BufferedReader br = new BufferedReader(new FileReader("C:/Users/aachm/Desktop/adbook.json"));
             Gson gson = new Gson();
             Contact[] list = gson.fromJson(br, Contact[].class);
             return Arrays.asList(list);
@@ -98,8 +94,7 @@ public class Address {
         Gson gson = new Gson();
         try {
             FileWriter fout = new FileWriter("/Users/abhinavthakur/Desktop/adbook.json");
-            //FileWriter fout = new FileWriter("C:/Users/aachm/Desktop/adbook.json");
-            String s = gson.toJson(c); // pehle for loop nmei ek ek contact run karaa rahe the aur ab
+            String s = gson.toJson(c); // pehle for loop mei ek ek contact run karaa rahe the aur ab
             fout.write(s);
             fout.close();
         } catch (IOException e) {
