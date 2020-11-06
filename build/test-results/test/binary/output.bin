@@ -1,0 +1,5 @@
+Driver loaded
+) com.mysql.fabric.jdbc.FabricMySQLDriver
+ com.mysql.jdbc.Driver
+UConnecting to database:jdbc:mysql://localhost:3306/address_book_service?useSSL=false
+2Connected com.mysql.jdbc.JDBC4Connection@23e345ce

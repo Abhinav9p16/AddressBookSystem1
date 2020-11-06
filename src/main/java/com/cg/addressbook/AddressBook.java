@@ -78,23 +78,6 @@ class AddressBook {
         }
     }
 
-    public int findDoj(String beg, String end) {
-        int count = 0;
-        String sql = "select * from addressbook where date_added between ? and ?;";
-        try {
-            Connection connection = con.getConnection();
-            Statement = connection.prepareStatement(sql);
-            Statement.setString(1, beg);
-            Statement.setString(2, end);
-            ResultSet r = Statement.executeQuery();
-            while (r.next()) {
-                count++;
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return count;
-    }
 
     public List<Contact> readData() {
         String sql = "select * from addressbook ;";
@@ -133,6 +116,24 @@ class AddressBook {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public int findDoj(String beg, String end) {
+        int count = 0;
+        String sql = "select * from addressbook where date_added between ? and ?;";
+        try {
+            Connection connection = con.getConnection();
+            Statement = connection.prepareStatement(sql);
+            Statement.setString(1, beg);
+            Statement.setString(2, end);
+            ResultSet r = Statement.executeQuery();
+            while (r.next()) {
+                count++;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return count;
     }
 
     public int FetchField(String field, String data) {
