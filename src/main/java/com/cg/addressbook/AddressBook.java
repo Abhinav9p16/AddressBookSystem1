@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+//import io.restassured.*;
+
 
 class AddressBook {
     ConnectionRetriever con = new ConnectionRetriever();
@@ -47,7 +49,7 @@ class AddressBook {
     public void addContact() {
         Contact a = new Contact();
         a.addContact();
-        if (checkDup(a)) System.out.println("Duplicate Contact");
+        if (checkDup(a)) System.out.println("Duplicate Contact!!!");
         else c.add(a);
     }
 
@@ -56,7 +58,7 @@ class AddressBook {
             if (nameCheck(f, l, i)) {
                 c.get(i).editContact();
                 break;
-            }
+            } else System.out.println("Contact not found!!!");
         }
     }
 
@@ -65,7 +67,7 @@ class AddressBook {
             if (nameCheck(f, l, i)) {
                 c.get(i).viewContact();
                 break;
-            }
+            } else System.out.println("Contact not found!!!");
         }
     }
 
@@ -74,7 +76,7 @@ class AddressBook {
             if (nameCheck(f, l, i)) {
                 c.remove(i);
                 break;
-            }
+            } else System.out.println("Contact not found!!!");
         }
     }
 
@@ -142,7 +144,6 @@ class AddressBook {
         try {
             Connection connection = con.getConnection();
             Statement = connection.prepareStatement(sql);
-            ;
             Statement.setString(1, data);
             ResultSet r = Statement.executeQuery();
             while (r.next()) {

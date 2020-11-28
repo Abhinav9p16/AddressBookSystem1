@@ -14,7 +14,7 @@ public class JSONServerTestAddressBook {
 
     }
     @Test
-    public void test_WriteContactIntoJsonServer() {
+    public void givenContact_WhenWrittenToJsonServer_ShouldReturn() {
         AddressBook a = new AddressBook();
         List<Contact> contacts = a.readData();
         for (Contact contact : contacts) {

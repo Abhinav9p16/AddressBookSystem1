@@ -7,37 +7,37 @@ import java.util.ArrayList;
 public class TestAddressBook {
 
     @Test
-    public void test_retrieveData() {
+    public void givenContactDetails_WhenRetrievedFromAddressBook_ShouldReturnCorrectCount() {
         AddressBook a = new AddressBook();
         Assert.assertEquals(7, a.readData().size());
     }
 
     @Test
-    public void test_UpdateDetailsInDatabase() {
+    public void givenContactDetails_WhenUpdatedInAddressBook_ShouldReturn() {
         AddressBook a = new AddressBook();
         a.updateContact("address", "Z street", "Akhandanand", "Tripathi");
     }
 
     @Test
-    public void test__RetrieveContactWithinDateRange() {
+    public void givenTwoDates_WhenRetrievedContactsAddedBetweenDatesFromDB_ShouldReturnCorrectCount() {
         AddressBook a = new AddressBook();
         Assert.assertEquals(7, a.findDoj("1999-01-01", "2020-01-01"));
     }
 
     @Test
-    public void test_RetrieveNumContactsByCity() {
+    public void givenCity_WhenRetrievedContactByCityFromDB_ShouldReturnCorrectCount() {
         AddressBook a = new AddressBook();
         Assert.assertEquals(3, a.FetchField("city", "Mirzapur"));
     }
 
     @Test
-    public void test_RetrieveNumContactsByState() {
+    public void givenCity_WhenRetrievedContactByStateFromDB_ShouldReturnCorrectCount() {
         AddressBook a = new AddressBook();
         Assert.assertEquals(7, a.FetchField("state", "Uttar Pradesh"));
     }
 
     @Test
-    public void test_InsertContactDetailsToDatabase() {
+    public void givenARecord_WhenSuccessfullyInsertedToDB_ShouldReturnTrue() {
         AddressBook a = new AddressBook();
         Contact c = new Contact();
         c.setContact("Munna", "Tripathi", "M Street", "Mirzapur", "Uttar Pradesh", "434343", "9988776655", "mt@gmail.com");
@@ -47,7 +47,7 @@ public class TestAddressBook {
     }
 
     @Test
-    public void test_InsertContactDetailsToDatabaseByMultiThread() {
+    public void givenARecord_WhenSuccessfullyInsertedToDB_UsingMultiThread_ShouldReturnTrue() {
         ArrayList<Contact> contacts = new ArrayList<>();
         char d = 'a';
         Contact z = new Contact();
